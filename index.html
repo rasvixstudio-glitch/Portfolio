@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://unpkg.com" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://unpkg.com/@fortawesome/fontawesome-free@6.7.2/js/all.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      scrollbar-width: none;
+      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+  </style>
+</head>
+
+<link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" />
+
+<style type="text/tailwindcss">
+@theme {
+  --color-navy: #0B1426;
+  --color-navy-light: #132040;
+  --color-navy-mid: #1A2A50;
+  --color-gold: #C8A55C;
+  --color-gold-light: #E8D5A0;
+  --color-gold-dim: rgba(200,165,92,0.15);
+  --color-cream: #F5F0E8;
+  --color-cream-dim: #B8B0A0;
+  --color-charcoal: #2A2A2A;
+  --color-copper: #B87333;
+  --color-surface: #0E1A30;
+  --color-surface-2: #121E38;
+  --color-line: rgba(245,240,232,0.08);
+  --color-line-strong: rgba(245,240,232,0.18);
+}
+</style>
+
+<style>
+  @keyframes float-blob { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.05)} 66%{transform:translate(-20px,15px) scale(0.95)} }
+  @keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  @keyframes pulse-ring { 0%{transform:scale(0.95);opacity:0.6} 50%{transform:scale(1.05);opacity:1} 100%{transform:scale(0.95);opacity:0.6} }
+  @keyframes draw-line { 0%{stroke-dashoffset:1000} 100%{stroke-dashoffset:0} }
+  @keyframes stem-drop { 0%{top:-100%} 50%{top:100%} 100%{top:100%} }
+  @keyframes spin-slow { to{transform:rotate(360deg)} }
+
+  body { font-family:'Plus Jakarta Sans',-apple-system,sans-serif; }
+  ::selection { background:#C8A55C; color:#0B1426; }
+  .serif { font-family:'Bodoni Moda',Georgia,serif; }
+  .mono { font-family:'Space Mono',monospace; }
+
+  /* Grain overlay */
+  body::before {
+    content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.025;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:128px 128px;
+  }
+</style>
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
+  <div class="max-w-[1400px] mx-auto px-12 max-sm:px-5 py-7 max-sm:py-5 flex justify-between items-center">
+    <a href="#top" class="serif text-xl font-bold tracking-tight uppercase text-cream">
+      RASVIX <em class="italic font-normal">Studio</em>
+    </a>
+    <nav class="flex gap-8 max-sm:gap-4 text-xs max-sm:text-[0.65rem] uppercase tracking-[0.14em] font-medium text-cream">
+      <a href="#about" class="hover:opacity-60 transition-opacity">About</a>
+      <a href="#process" class="hover:opacity-60 transition-opacity">Process</a>
+      <a href="#work" class="hover:opacity-60 transition-opacity">Work</a>
+      <a href="#experience" class="hover:opacity-60 transition-opacity">Experience</a>
+      <a href="#contact" class="hover:opacity-60 transition-opacity">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="bg-navy text-cream overflow-x-hidden">
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="min-h-screen flex flex-col justify-end relative overflow-hidden pb-20 max-sm:pb-14 px-12 max-sm:px-5 pt-28">
+    <!-- Decorative blobs -->
+    <div class="absolute top-[-15%] right-[-8%] w-[700px] h-[700px] rounded-full opacity-40 pointer-events-none" style="background:radial-gradient(circle,rgba(200,165,92,0.18) 0%,transparent 70%);animation:float-blob 12s ease-in-out infinite"></div>
+    <div class="absolute bottom-[10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-25 pointer-events-none" style="background:radial-gradient(circle,rgba(184,115,51,0.15) 0%,transparent 70%);animation:float-blob 15s ease-in-out infinite reverse"></div>
+
+    <!-- Large geometric wireframe -->
+    <svg class="absolute top-[8%] right-[4%] w-[500px] h-[500px] max-sm:hidden pointer-events-none" viewBox="0 0 500 500" style="animation:spin-slow 80s linear infinite" aria-hidden="true">
+      <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(200,165,92,0.1)" stroke-width="0.5"/>
+      <circle cx="250" cy="250" r="180" fill="none" stroke="rgba(245,240,232,0.05)" stroke-width="0.5"/>
+      <circle cx="250" cy="250" r="130" fill="none" stroke="rgba(200,165,92,0.07)" stroke-width="0.5"/>
+      <polygon points="250,20 470,380 30,380" fill="none" stroke="rgba(245,240,232,0.04)" stroke-width="0.5"/>
+      <polygon points="250,480 30,120 470,120" fill="none" stroke="rgba(200,165,92,0.05)" stroke-width="0.5"/>
+      <line x1="20" y1="250" x2="480" y2="250" stroke="rgba(245,240,232,0.03)" stroke-width="0.5"/>
+      <line x1="250" y1="20" x2="250" y2="480" stroke="rgba(245,240,232,0.03)" stroke-width="0.5"/>
+    </svg>
+
+    <!-- Abstract decorative shapes -->
+    <svg class="absolute top-[20%] left-[8%] w-48 h-48 max-sm:hidden pointer-events-none opacity-20" viewBox="0 0 200 200" aria-hidden="true">
+      <rect x="40" y="40" width="120" height="120" fill="none" stroke="rgba(200,165,92,0.4)" stroke-width="0.8" transform="rotate(15 100 100)"/>
+      <rect x="60" y="60" width="80" height="80" fill="none" stroke="rgba(200,165,92,0.25)" stroke-width="0.8" transform="rotate(30 100 100)"/>
+    </svg>
+
+    <p class="text-xs tracking-[0.18em] uppercase text-cream-dim mb-8 flex items-center gap-4 font-medium">
+      <span class="w-12 h-px bg-gold inline-block"></span> Bangalore, India — UI/UX &amp; Brand Design
+    </p>
+
+    <h1 class="serif font-black leading-[0.85] tracking-tight" style="font-size:clamp(3.8rem,12vw,10rem)">
+      <span class="block">arpitha a g</span>
+      <span class="block italic" style="color:transparent;-webkit-text-stroke:1.5px #F5F0E8">building rasvix studio.</span>
+    </h1>
+
+    <p class="max-w-xl mt-12 text-base leading-relaxed text-cream-dim">
+      three years of freelance product and brand design — turning early sketches into interfaces people can actually use, and business ideas into identities people remember. currently exploring where careful ui craft meets ai-assisted creative workflow.
+    </p>
+
+    <div class="mt-12 flex gap-4 flex-wrap items-center">
+      <a href="#work" class="inline-flex items-center gap-2.5 px-8 py-4 text-xs font-semibold tracking-widest uppercase bg-gold text-navy border border-gold hover:bg-cream hover:border-cream hover:text-navy transition-all duration-300">
+        <span>see the signature project</span>
+      </a>
+      <a href="mailto:rasvixstudio@gmail.com" class="inline-flex items-center gap-2.5 px-8 py-4 text-xs font-semibold tracking-widest uppercase bg-transparent text-cream border border-line-strong hover:bg-gold hover:text-navy hover:border-gold transition-all duration-300">
+        <span>say hello</span>
+      </a>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-10 right-12 max-sm:hidden text-[0.65rem] tracking-[0.2em] uppercase text-cream-dim" style="writing-mode:vertical-rl">
+      <span class="flex items-center gap-3">
+        <span class="w-px h-16 bg-line-strong inline-block relative overflow-hidden">
+          <span class="absolute left-0 w-px h-full bg-gold" style="animation:stem-drop 2s ease-in-out infinite"></span>
+        </span>
+        scroll
+      </span>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="border-y border-line overflow-hidden py-5" aria-hidden="true">
+    <div class="inline-flex gap-16 whitespace-nowrap" style="animation:marquee 35s linear infinite">
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">UI/UX Design</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Brand Identity</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Design Systems</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Creative Direction</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">AI Workflow</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Motion Graphics</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Video Editing</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">3D Design</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">UI/UX Design</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Brand Identity</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Design Systems</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Creative Direction</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">AI Workflow</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Motion Graphics</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">Video Editing</span><span class="text-gold opacity-50">●</span>
+      <span class="serif text-lg font-bold text-cream-dim opacity-25 uppercase tracking-wider">3D Design</span><span class="text-gold opacity-50">●</span>
+    </div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="py-36 max-sm:py-24 bg-surface relative overflow-hidden">
+    <!-- Top accent line -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-28" style="background:linear-gradient(to bottom,#C8A55C,transparent)"></div>
+
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="grid grid-cols-[1fr_1.3fr] max-md:grid-cols-1 gap-20 max-md:gap-12 items-start">
+        <!-- Visual -->
+        <div class="aspect-[3/4] relative group">
+          <div class="absolute inset-0 border border-line transition-transform duration-700 group-hover:rotate-0" style="transform:rotate(-3deg)"></div>
+          <div class="absolute inset-6" style="background:linear-gradient(135deg,rgba(200,165,92,0.12),rgba(184,115,51,0.04))">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <svg viewBox="0 0 200 260" class="w-3/5 opacity-40" aria-hidden="true">
+                <circle cx="100" cy="80" r="60" fill="none" stroke="rgba(200,165,92,0.35)" stroke-width="0.8"/>
+                <circle cx="100" cy="80" r="40" fill="none" stroke="rgba(245,240,232,0.12)" stroke-width="0.8"/>
+                <rect x="30" y="120" width="140" height="140" fill="none" stroke="rgba(200,165,92,0.2)" stroke-width="0.8" transform="rotate(12 100 190)"/>
+                <line x1="100" y1="20" x2="100" y2="260" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+                <line x1="0" y1="130" x2="200" y2="130" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+              </svg>
+            </div>
+          </div>
+          <!-- Color palette display -->
+          <div class="absolute bottom-6 left-6 right-6 flex gap-2">
+            <div class="flex-1 h-2 bg-navy rounded-full"></div>
+            <div class="flex-1 h-2 bg-gold rounded-full"></div>
+            <div class="flex-1 h-2 bg-copper rounded-full"></div>
+            <div class="flex-1 h-2 bg-cream rounded-full"></div>
+          </div>
+        </div>
+
+        <!-- Copy -->
+        <div>
+          <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            01 — About
+          </p>
+          <h2 class="serif font-bold leading-tight tracking-tight mb-7" style="font-size:clamp(2.2rem,5vw,3.4rem)">design, for me, starts with paying close attention.</h2>
+          <p class="text-base leading-[1.85] text-cream-dim mb-5">i'm a <strong class="text-cream font-semibold">UI/UX and brand designer</strong> working independently out of Bangalore since 2023 — before that, learning the ropes across four internships and student design teams in Shivamogga. my background is in <strong class="text-cream font-semibold">computer science</strong>, which taught me to think in systems; design is where i learned to make those systems feel human.</p>
+          <p class="text-base leading-[1.85] text-cream-dim">i work end to end — discovery, user flows, wireframes, prototypes, UI — and just as often i'm asked to build the brand a product lives inside: the name, the mark, the voice, the guidelines that keep it all consistent months after i've handed it off. more recently, i've folded AI-assisted workflows into that process — for ideation and speed, never in place of judgment.</p>
+
+          <div class="grid grid-cols-3 gap-6 mt-12">
+            <div class="pt-6 border-t-2 border-gold">
+              <span class="serif text-4xl font-bold block leading-none mb-2">3+</span>
+              <span class="text-xs text-cream-dim uppercase tracking-wider">years freelance</span>
+            </div>
+            <div class="pt-6 border-t-2 border-gold">
+              <span class="serif text-4xl font-bold block leading-none mb-2">4</span>
+              <span class="text-xs text-cream-dim uppercase tracking-wider">design internships</span>
+            </div>
+            <div class="pt-6 border-t-2 border-gold">
+              <span class="serif text-4xl font-bold block leading-none mb-2">15+</span>
+              <span class="text-xs text-cream-dim uppercase tracking-wider">tools &amp; platforms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" class="py-36 max-sm:py-24 relative">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16 flex max-md:flex-col justify-between items-end max-md:items-start gap-6">
+        <div>
+          <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            02 — What I Do
+          </p>
+          <h2 class="serif font-bold leading-tight tracking-tight max-w-xl" style="font-size:clamp(2.2rem,5vw,3.4rem)">four ways i usually get pulled into a project.</h2>
+        </div>
+        <p class="max-w-xs text-sm text-cream-dim leading-relaxed">most engagements end up touching more than one of these — a brand rarely stays separate from the product it belongs to.</p>
+      </div>
+
+      <!-- Service rows -->
+      <div>
+        <div class="grid grid-cols-[80px_1fr_1.2fr] max-sm:grid-cols-1 gap-8 max-sm:gap-2 py-10 border-t border-line group relative hover:bg-gold-dim/30 transition-colors">
+          <span class="serif text-2xl font-bold text-gold opacity-40 group-hover:opacity-100 transition-opacity">01</span>
+          <h3 class="serif text-2xl font-bold group-hover:translate-x-2 transition-transform flex items-center gap-3">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5" class="shrink-0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Product &amp; UI/UX design
+          </h3>
+          <p class="text-sm text-cream-dim leading-relaxed max-w-[46ch]">Research, IA, user flows and wireframes through to high-fidelity UI — for websites, dashboards, SaaS tools and mobile apps, with accessibility and handoff considered from the start, not bolted on at the end.</p>
+        </div>
+        <div class="grid grid-cols-[80px_1fr_1.2fr] max-sm:grid-cols-1 gap-8 max-sm:gap-2 py-10 border-t border-line group relative hover:bg-gold-dim/30 transition-colors">
+          <span class="serif text-2xl font-bold text-gold opacity-40 group-hover:opacity-100 transition-opacity">02</span>
+          <h3 class="serif text-2xl font-bold group-hover:translate-x-2 transition-transform flex items-center gap-3">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5" class="shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Brand &amp; visual identity
+          </h3>
+          <p class="text-sm text-cream-dim leading-relaxed max-w-[46ch]">Logo systems, typography, colour and guidelines built to survive contact with a real business — marketing collateral, stationery and social templates included.</p>
+        </div>
+        <div class="grid grid-cols-[80px_1fr_1.2fr] max-sm:grid-cols-1 gap-8 max-sm:gap-2 py-10 border-t border-line group relative hover:bg-gold-dim/30 transition-colors">
+          <span class="serif text-2xl font-bold text-gold opacity-40 group-hover:opacity-100 transition-opacity">03</span>
+          <h3 class="serif text-2xl font-bold group-hover:translate-x-2 transition-transform flex items-center gap-3">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5" class="shrink-0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Design systems
+          </h3>
+          <p class="text-sm text-cream-dim leading-relaxed max-w-[46ch]">Reusable components and documented patterns so a product's design stays coherent as more people build on top of it.</p>
+        </div>
+        <div class="grid grid-cols-[80px_1fr_1.2fr] max-sm:grid-cols-1 gap-8 max-sm:gap-2 py-10 border-t border-b border-line group relative hover:bg-gold-dim/30 transition-colors">
+          <span class="serif text-2xl font-bold text-gold opacity-40 group-hover:opacity-100 transition-opacity">04</span>
+          <h3 class="serif text-2xl font-bold group-hover:translate-x-2 transition-transform flex items-center gap-3">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5" class="shrink-0"><path d="M12 2a4 4 0 0 1 4 4c0 2-2 3-2 5h-4c0-2-2-3-2-5a4 4 0 0 1 4-4z"/><path d="M10 17h4"/><path d="M10 20h4"/><path d="M9 11h.01M15 11h.01"/></svg>
+            AI-assisted creative workflow
+          </h3>
+          <p class="text-sm text-cream-dim leading-relaxed max-w-[46ch]">Generative tools used for ideation, visual exploration and content support — sped-up production, still a human hand on every decision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESIGN THINKING ============ -->
+  <section id="process" class="py-36 max-sm:py-24 bg-surface-2 relative overflow-hidden">
+    <!-- Background decorative element -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20 pointer-events-none" style="background:radial-gradient(circle,rgba(200,165,92,0.08) 0%,transparent 70%)"></div>
+
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-20 text-center">
+        <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 inline-flex items-center gap-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          03 — Design Thinking
+        </p>
+        <h2 class="serif font-bold leading-tight tracking-tight mx-auto max-w-2xl" style="font-size:clamp(2.2rem,5vw,3.4rem)">every project follows a rhythm, not a rigid formula.</h2>
+        <p class="text-sm text-cream-dim leading-relaxed max-w-lg mx-auto mt-4">my process adapts to each project's needs, but the core philosophy stays constant — listen deeply, define clearly, explore widely, then refine ruthlessly.</p>
+      </div>
+
+      <!-- Process steps -->
+      <div class="grid grid-cols-6 max-lg:grid-cols-3 max-sm:grid-cols-2 gap-0 relative">
+        <!-- Connecting line -->
+        <div class="absolute top-[52px] left-[8%] right-[8%] h-px bg-line max-lg:hidden"></div>
+
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              <circle cx="11" cy="11" r="3" stroke-dasharray="2 2"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">01</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Discover</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Research, interviews and competitive audits. Understanding the real problem before assuming solutions.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v0M12 17v0M7 12h0M17 12h0" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">02</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Define</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Synthesising insights into clear problem statements, personas, and design principles that guide every decision.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <path d="M12 2a4 4 0 0 1 4 4c0 2-2 3-2 5h-4c0-2-2-3-2-5a4 4 0 0 1 4-4z"/>
+              <path d="M9 18h6M10 22h4" stroke-linecap="round"/>
+              <path d="M5 8l-1-1M19 8l1-1M12 1v-0" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">03</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Ideate</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Broad exploration — sketches, moodboards, AI-assisted concept generation. Quantity before quality, then sharp curation.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <rect x="4" y="4" width="16" height="16" rx="2"/>
+              <path d="M9 4v16M4 9h16" stroke-dasharray="3 2"/>
+              <circle cx="15" cy="15" r="2"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">04</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Prototype</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Interactive prototypes at the right fidelity — low-fi for flow validation, high-fi for visual sign-off and user testing.</p>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">05</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Test</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Usability testing with real users. Watching what breaks, what confuses, and what delights — then acting on it.</p>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="flex flex-col items-center text-center px-4 pb-8 group">
+          <div class="w-[104px] h-[104px] rounded-full border border-gold/30 flex items-center justify-center mb-6 relative bg-navy group-hover:border-gold group-hover:bg-gold-dim/20 transition-all duration-500">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.2">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.78 7.78 5.5 5.5 0 0 1 7.78-7.78z"/>
+              <path d="M15.5 8.5L19 5"/>
+              <path d="M14 11l1.5-1.5"/>
+              <path d="M2 22l4-4"/>
+            </svg>
+            <span class="mono text-[0.6rem] text-gold absolute -top-2 -right-1 bg-navy px-1.5 border border-gold/30 rounded-full">06</span>
+          </div>
+          <h4 class="serif text-lg font-bold mb-2">Iterate</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Refinement cycles driven by data and feedback. The best design is rarely the first one — it's the most evolved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOGO & BRAND IDENTITY ============ -->
+  <section class="py-36 max-sm:py-24 relative overflow-hidden">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16">
+        <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+          04 — Logo &amp; Brand Identity
+        </p>
+        <h2 class="serif font-bold leading-tight tracking-tight max-w-2xl" style="font-size:clamp(2.2rem,5vw,3.4rem)">the mark behind the studio.</h2>
+      </div>
+
+      <!-- Brand presentation -->
+      <div class="border border-line relative p-16 max-sm:p-8 mb-12" style="background:linear-gradient(135deg,rgba(200,165,92,0.03) 0%,transparent 100%)">
+        <!-- Corner accents -->
+        <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-gold"></div>
+        <div class="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-gold"></div>
+
+        <!-- Primary wordmark -->
+        <div class="text-center mb-16">
+          <div class="inline-block">
+            <svg viewBox="0 0 600 120" class="w-full max-w-lg mx-auto" aria-label="Rasvix Studio wordmark">
+              <text x="300" y="70" text-anchor="middle" font-family="'Bodoni Moda',serif" font-size="72" font-weight="800" fill="#F5F0E8" letter-spacing="16">RASVIX</text>
+              <text x="300" y="108" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="20" font-weight="300" fill="#C8A55C" letter-spacing="18">S T U D I O</text>
+              <line x1="120" y1="82" x2="480" y2="82" stroke="#C8A55C" stroke-width="0.5" opacity="0.4"/>
+            </svg>
+          </div>
+          <p class="text-xs text-cream-dim mt-6 tracking-wider uppercase">Primary Wordmark — Horizontal Lock-up</p>
+        </div>
+
+        <!-- Logo variations grid -->
+        <div class="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-6">
+          <!-- Monogram -->
+          <div class="border border-line p-8 flex flex-col items-center justify-center text-center bg-navy/50 group hover:border-gold/40 transition-colors">
+            <svg viewBox="0 0 100 100" class="w-20 h-20 mb-4">
+              <rect x="5" y="5" width="90" height="90" fill="none" stroke="#C8A55C" stroke-width="1"/>
+              <text x="50" y="62" text-anchor="middle" font-family="'Bodoni Moda',serif" font-size="42" font-weight="800" fill="#F5F0E8">RS</text>
+            </svg>
+            <p class="text-xs text-cream-dim tracking-wider uppercase">Monogram</p>
+          </div>
+          <!-- Icon mark -->
+          <div class="border border-line p-8 flex flex-col items-center justify-center text-center bg-navy/50 group hover:border-gold/40 transition-colors">
+            <svg viewBox="0 0 100 100" class="w-20 h-20 mb-4">
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#C8A55C" stroke-width="1"/>
+              <path d="M30 68 L50 25 L70 68 Z" fill="none" stroke="#F5F0E8" stroke-width="1.5"/>
+              <circle cx="50" cy="50" r="8" fill="none" stroke="#C8A55C" stroke-width="1"/>
+            </svg>
+            <p class="text-xs text-cream-dim tracking-wider uppercase">Icon Mark</p>
+          </div>
+          <!-- Reversed -->
+          <div class="border border-line p-8 flex flex-col items-center justify-center text-center bg-cream group hover:border-gold/40 transition-colors">
+            <svg viewBox="0 0 100 100" class="w-20 h-20 mb-4">
+              <rect x="5" y="5" width="90" height="90" fill="none" stroke="#0B1426" stroke-width="1"/>
+              <text x="50" y="62" text-anchor="middle" font-family="'Bodoni Moda',serif" font-size="42" font-weight="800" fill="#0B1426">RS</text>
+            </svg>
+            <p class="text-xs text-charcoal tracking-wider uppercase">Light Mode</p>
+          </div>
+          <!-- Minimal -->
+          <div class="border border-line p-8 flex flex-col items-center justify-center text-center bg-navy/50 group hover:border-gold/40 transition-colors">
+            <svg viewBox="0 0 100 100" class="w-20 h-20 mb-4">
+              <text x="50" y="60" text-anchor="middle" font-family="'Bodoni Moda',serif" font-size="36" font-weight="800" fill="#C8A55C" letter-spacing="4">RS</text>
+              <line x1="20" y1="70" x2="80" y2="70" stroke="#C8A55C" stroke-width="0.8"/>
+            </svg>
+            <p class="text-xs text-cream-dim tracking-wider uppercase">Minimal</p>
+          </div>
+        </div>
+
+        <!-- Brand palette -->
+        <div class="mt-12 pt-8 border-t border-line">
+          <p class="text-xs text-cream-dim tracking-wider uppercase mb-6">Brand Palette</p>
+          <div class="flex max-sm:flex-wrap gap-4">
+            <div class="flex-1 min-w-[100px]">
+              <div class="h-20 bg-navy border border-line rounded-sm mb-3"></div>
+              <p class="text-xs font-semibold">Deep Navy</p>
+              <p class="text-[0.65rem] text-cream-dim mono">#0B1426</p>
+            </div>
+            <div class="flex-1 min-w-[100px]">
+              <div class="h-20 bg-gold rounded-sm mb-3"></div>
+              <p class="text-xs font-semibold">Warm Gold</p>
+              <p class="text-[0.65rem] text-cream-dim mono">#C8A55C</p>
+            </div>
+            <div class="flex-1 min-w-[100px]">
+              <div class="h-20 bg-copper rounded-sm mb-3"></div>
+              <p class="text-xs font-semibold">Copper</p>
+              <p class="text-[0.65rem] text-cream-dim mono">#B87333</p>
+            </div>
+            <div class="flex-1 min-w-[100px]">
+              <div class="h-20 bg-cream rounded-sm mb-3"></div>
+              <p class="text-xs font-semibold text-charcoal">Cream</p>
+              <p class="text-[0.65rem] text-cream-dim mono">#F5F0E8</p>
+            </div>
+            <div class="flex-1 min-w-[100px]">
+              <div class="h-20 bg-charcoal rounded-sm mb-3"></div>
+              <p class="text-xs font-semibold">Charcoal</p>
+              <p class="text-[0.65rem] text-cream-dim mono">#2A2A2A</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SIGNATURE PROJECT ============ -->
+  <section class="py-36 max-sm:py-24 bg-surface relative overflow-hidden" id="work">
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] pointer-events-none" style="background:radial-gradient(circle,rgba(200,165,92,0.05) 0%,transparent 70%)"></div>
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16 flex max-md:flex-col justify-between items-end max-md:items-start gap-6">
+        <div>
+          <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            05 — The Signature Project
+          </p>
+          <h2 class="serif font-bold leading-tight tracking-tight" style="font-size:clamp(2.2rem,5vw,3.4rem)">the project i want to be known for.</h2>
+        </div>
+        <p class="max-w-xs text-sm text-cream-dim leading-relaxed">imagined, not shipped yet — but it's the clearest picture of where I want my work to sit.</p>
+      </div>
+
+      <div class="border border-line p-16 max-sm:p-8 relative overflow-hidden" style="background:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 100%);backdrop-filter:blur(20px)">
+        <div class="absolute top-0 left-0 w-28 h-28 border-t-2 border-l-2 border-gold"></div>
+        <div class="absolute bottom-0 right-0 w-28 h-28 border-b-2 border-r-2 border-gold"></div>
+
+        <span class="text-xs tracking-[0.2em] uppercase text-gold font-semibold block mb-6">Concept — Brand Identity + Product Design</span>
+        <h3 class="serif font-bold leading-tight max-w-3xl mb-8" style="font-size:clamp(2rem,4.5vw,3rem)">Root — a journal for people who garden their attention, not their plants.</h3>
+
+        <!-- Featured visual teaser -->
+        <div class="mb-10 relative h-48 max-sm:h-32 border border-line overflow-hidden" style="background:linear-gradient(135deg,#0a0a0a 0%,#1a1510 40%,#0d1a0d 70%,#0a0a0a 100%)">
+          <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <!-- Abstract botanical shapes -->
+            <path d="M100,180 Q120,80 160,60 Q180,50 170,100 Q165,130 180,180" fill="none" stroke="#8A9A73" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="160" cy="58" r="12" fill="none" stroke="#C6836A" stroke-width="1" opacity="0.5"/>
+            <path d="M300,180 Q310,120 340,80 Q360,50 350,90 Q345,110 360,140 Q370,160 370,180" fill="none" stroke="#8A9A73" stroke-width="1" opacity="0.5"/>
+            <ellipse cx="340" cy="75" rx="15" ry="10" fill="none" stroke="#C6836A" stroke-width="0.8" opacity="0.4"/>
+            <path d="M500,180 Q530,100 560,70 Q580,55 575,95 Q570,120 590,160 Q600,175 595,180" fill="none" stroke="#8A9A73" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="562" cy="68" r="8" fill="none" stroke="#F3EBDF" stroke-width="0.8" opacity="0.3"/>
+            <path d="M700,180 Q690,130 710,90 Q720,70 730,100 Q735,120 720,180" fill="none" stroke="#8A9A73" stroke-width="1" opacity="0.4"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="serif text-2xl font-bold italic opacity-20 tracking-widest">root</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[1.1fr_0.9fr] max-md:grid-cols-1 gap-14">
+          <div>
+            <p class="text-sm text-cream-dim leading-[1.85] mb-4">Root is a small, slow app for tracking the quiet, non-glamorous habits that actually shape a life — reading a chapter, watering an actual plant, sitting with a feeling instead of scrolling past it. Every entry is logged as growth on a personal, ever-changing botanical illustration rather than a streak counter.</p>
+            <p class="text-sm text-cream-dim leading-[1.85]">I'd design it top to bottom: the name and mark, a restrained editorial visual identity, the onboarding and daily-use flows, and a component system calm enough to open at 11pm without waking you up further. AI-assisted exploration would speed up early concept variations; every interaction and every line of copy would still be decided by hand.</p>
+            <div class="flex gap-2.5 mt-8">
+              <span class="w-7 h-7 border border-line hover:scale-125 transition-transform" style="background:#0a0a0a"></span>
+              <span class="w-7 h-7 border border-line hover:scale-125 transition-transform" style="background:#C6836A"></span>
+              <span class="w-7 h-7 border border-line hover:scale-125 transition-transform" style="background:#8A9A73"></span>
+              <span class="w-7 h-7 border border-line hover:scale-125 transition-transform" style="background:#F3EBDF"></span>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xs uppercase tracking-[0.15em] text-gold font-semibold mb-5">Why This One</h4>
+            <ul class="space-y-0">
+              <li class="py-5 border-t border-line text-sm text-cream-dim leading-relaxed">
+                <strong class="text-cream block font-semibold mb-1 serif text-lg">it's brand and product, inseparably.</strong>
+                the identity only works if the interface behaves like it — which is the kind of project I keep gravitating toward.
+              </li>
+              <li class="py-5 border-t border-line text-sm text-cream-dim leading-relaxed">
+                <strong class="text-cream block font-semibold mb-1 serif text-lg">it rewards restraint.</strong>
+                no streaks, no guilt, no red badges — the harder, more interesting design problem is motivating someone gently.
+              </li>
+              <li class="py-5 border-t border-line text-sm text-cream-dim leading-relaxed">
+                <strong class="text-cream block font-semibold mb-1 serif text-lg">it's honest about tools.</strong>
+                AI speeds up the exploring; the judgment about what stays is still entirely mine.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="py-36 max-sm:py-24 relative">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16">
+        <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+          06 — Experience
+        </p>
+        <h2 class="serif font-bold leading-tight tracking-tight" style="font-size:clamp(2.2rem,5vw,3.4rem)">how i got from student design teams to freelancing full time.</h2>
+      </div>
+
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute top-0 bottom-0 left-[120px] w-px bg-line max-sm:hidden"></div>
+
+        <div class="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 gap-12 max-sm:gap-2 py-10 relative">
+          <span class="serif text-lg font-bold text-gold opacity-70 relative">
+            2023 — now
+            <span class="absolute -right-7 top-2.5 w-2 h-2 rounded-full border-2 border-gold bg-navy max-sm:hidden"></span>
+          </span>
+          <div>
+            <h3 class="serif text-2xl font-bold mb-1">Independent Freelancer</h3>
+            <span class="text-copper text-sm font-medium block mb-3">Freelance UI/UX &amp; Brand Designer · Bangalore</span>
+            <p class="text-sm text-cream-dim leading-relaxed max-w-2xl">End-to-end design for websites, web apps and mobile products — user flows through high-fidelity UI — alongside full brand identities, logo systems and guidelines. Manage every project independently, from client discovery to final delivery, with AI-assisted workflows folded into ideation and production.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 gap-12 max-sm:gap-2 py-10 border-t border-line relative">
+          <span class="serif text-lg font-bold text-gold opacity-70 relative">
+            2020
+            <span class="absolute -right-7 top-2.5 w-2 h-2 rounded-full border-2 border-gold bg-navy max-sm:hidden"></span>
+          </span>
+          <div>
+            <h3 class="serif text-2xl font-bold mb-1">Cyber Kings India</h3>
+            <span class="text-copper text-sm font-medium block mb-3">UI/UX Design</span>
+            <p class="text-sm text-cream-dim leading-relaxed max-w-2xl">Worked across a range of design concepts, building out foundational UI/UX skills on real client work.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 gap-12 max-sm:gap-2 py-10 border-t border-line relative">
+          <span class="serif text-lg font-bold text-gold opacity-70 relative">
+            2020
+            <span class="absolute -right-7 top-2.5 w-2 h-2 rounded-full border-2 border-gold bg-navy max-sm:hidden"></span>
+          </span>
+          <div>
+            <h3 class="serif text-2xl font-bold mb-1">All You Need</h3>
+            <span class="text-copper text-sm font-medium block mb-3">Graphic Design Intern</span>
+            <p class="text-sm text-cream-dim leading-relaxed max-w-2xl">Wireframing, poster design, video editing, infographics and early user-experience design work.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 gap-12 max-sm:gap-2 py-10 border-t border-line relative">
+          <span class="serif text-lg font-bold text-gold opacity-70 relative">
+            2020
+            <span class="absolute -right-7 top-2.5 w-2 h-2 rounded-full border-2 border-gold bg-navy max-sm:hidden"></span>
+          </span>
+          <div>
+            <h3 class="serif text-2xl font-bold mb-1">Developer Student Clubs, JNNCE</h3>
+            <span class="text-copper text-sm font-medium block mb-3">UI/UX Design Team Member</span>
+            <p class="text-sm text-cream-dim leading-relaxed max-w-2xl">Collaborated with 25+ designers to host 25+ design events, teaching design tools and UI/UX fundamentals to 500+ students.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 gap-12 max-sm:gap-2 py-10 border-t border-line relative">
+          <span class="serif text-lg font-bold text-gold opacity-70 relative">
+            2019 — 2020
+            <span class="absolute -right-7 top-2.5 w-2 h-2 rounded-full border-2 border-gold bg-navy max-sm:hidden"></span>
+          </span>
+          <div>
+            <h3 class="serif text-2xl font-bold mb-1">Kross Digital</h3>
+            <span class="text-copper text-sm font-medium block mb-3">Graphic Design Intern</span>
+            <p class="text-sm text-cream-dim leading-relaxed max-w-2xl">First real design job — social media posters, brochures and early app UI work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="py-36 max-sm:py-24 bg-surface relative overflow-hidden">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16">
+        <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          07 — Skills
+        </p>
+        <h2 class="serif font-bold leading-tight tracking-tight" style="font-size:clamp(2.2rem,5vw,3.4rem)">the toolkit behind the work.</h2>
+      </div>
+
+      <div class="grid grid-cols-3 max-md:grid-cols-1 gap-12">
+        <div>
+          <h4 class="text-xs uppercase tracking-[0.15em] text-gold font-semibold mb-5 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            UI/UX &amp; Product
+          </h4>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">User Research</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Personas</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Journey Mapping</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Information Architecture</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">User Flows</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Wireframing</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Prototyping</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Interaction Design</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Responsive Design</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Design Systems</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Usability Testing</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Accessibility</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Developer Handoff</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-[0.15em] text-gold font-semibold mb-5 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+            Brand &amp; Visual
+          </h4>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Brand Strategy</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Logo Design</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Visual Identity</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Brand Guidelines</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Typography</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Colour Systems</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Creative Direction</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Marketing Collateral</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Presentation Design</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Social Media Branding</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-[0.15em] text-gold font-semibold mb-5 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A55C" stroke-width="1.5"><path d="M12 2a4 4 0 0 1 4 4c0 2-2 3-2 5h-4c0-2-2-3-2-5a4 4 0 0 1 4-4z"/><path d="M10 17h4M10 20h4"/></svg>
+            AI &amp; Emerging Workflow
+          </h4>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">AI-Assisted Ideation</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Generative Visual Exploration</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Prompt-Based Workflows</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">AI-Assisted Content Design</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">AI-Enhanced Productivity</span>
+            <span class="text-xs text-cream-dim border border-line px-3 py-2 hover:text-navy hover:bg-gold hover:border-gold transition-all duration-300">Research Synthesis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section id="tools" class="py-36 max-sm:py-24 relative">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="mb-16">
+        <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          08 — Tools
+        </p>
+        <h2 class="serif font-bold leading-tight tracking-tight" style="font-size:clamp(2.2rem,5vw,3.4rem)">what i actually design in.</h2>
+      </div>
+
+      <div class="grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
+        <!-- Illustrator -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#330000,#1a0500)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#FF9A00">Ai</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Adobe Illustrator</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Vector design &amp; branding</p>
+        </div>
+
+        <!-- Premiere Pro -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#00005B,#000033)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#9999FF">Pr</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Adobe Premiere Pro</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Video editing</p>
+        </div>
+
+        <!-- After Effects -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#1F003D,#0D001A)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#9999FF">Ae</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Adobe After Effects</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Motion graphics</p>
+        </div>
+
+        <!-- DaVinci Resolve -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#1a1a1a,#0a0a0a)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#E8614D">DV</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">DaVinci Resolve</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Color grading &amp; video</p>
+        </div>
+
+        <!-- Figma -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#1e1e1e,#0e0e0e)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6">
+              <circle cx="12" cy="10" r="4" fill="none" stroke="#F24E1E" stroke-width="1.5"/>
+              <circle cx="20" cy="10" r="4" fill="none" stroke="#A259FF" stroke-width="1.5"/>
+              <circle cx="12" cy="18" r="4" fill="none" stroke="#0ACF83" stroke-width="1.5"/>
+              <circle cx="20" cy="18" r="4" fill="none" stroke="#1ABCFE" stroke-width="1.5"/>
+              <circle cx="12" cy="26" r="4" fill="none" stroke="#FF7262" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Figma</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">UI/UX design</p>
+        </div>
+
+        <!-- Photoshop -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#001E36,#00101E)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#31A8FF">Ps</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Adobe Photoshop</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Image editing</p>
+        </div>
+
+        <!-- InDesign -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#49021F,#2A0012)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#FF3366">Id</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Adobe InDesign</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Editorial design</p>
+        </div>
+
+        <!-- Canva -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#0B2239,#071526)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#00C4CC">Ca</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Canva</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Quick design production</p>
+        </div>
+
+        <!-- Miro -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#2B1B00,#1A1000)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#FFD02F">Mi</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Miro</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Collaborative ideation</p>
+        </div>
+
+        <!-- Notion -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#1a1a1a,#0a0a0a)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">No</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Notion</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">Project management</p>
+        </div>
+
+        <!-- Blender -->
+        <div class="border border-line p-6 group hover:border-gold/40 hover:bg-gold-dim/10 transition-all duration-300">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 border border-gold/30 group-hover:border-gold transition-colors" style="background:linear-gradient(135deg,#1a2a40,#0e1520)">
+            <svg viewBox="0 0 32 32" class="w-6 h-6"><text x="16" y="22" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="14" font-weight="700" fill="#E87D0D">Bl</text></svg>
+          </div>
+          <h4 class="text-sm font-semibold mb-1">Blender</h4>
+          <p class="text-xs text-cream-dim leading-relaxed">3D design</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION + ELSEWHERE ============ -->
+  <section id="elsewhere" class="py-36 max-sm:py-24 bg-surface relative">
+    <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+      <div class="grid grid-cols-2 max-md:grid-cols-1 gap-20 max-md:gap-12">
+        <div>
+          <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            09 — Education
+          </p>
+          <h3 class="serif text-2xl font-bold mt-4 mb-3">B.E., Computer Science &amp; Engineering</h3>
+          <p class="text-sm text-cream-dim leading-relaxed">JNN College of Engineering, Shivamogga</p>
+        </div>
+        <div>
+          <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Find the rest of the work
+          </p>
+          <div class="flex flex-col mt-4">
+            <a href="https://www.behance.net/arpithaag" target="_blank" rel="noopener" class="flex justify-between items-center py-5 border-t border-line text-lg font-semibold hover:text-gold hover:pl-3 transition-all duration-300 group">
+              Behance
+              <span class="text-xs text-cream-dim font-normal group-hover:text-gold transition-colors">full case studies</span>
+            </a>
+            <a href="https://www.linkedin.com/in/iamarpitha/" target="_blank" rel="noopener" class="flex justify-between items-center py-5 border-t border-line text-lg font-semibold hover:text-gold hover:pl-3 transition-all duration-300 group">
+              LinkedIn
+              <span class="text-xs text-cream-dim font-normal group-hover:text-gold transition-colors">experience &amp; recommendations</span>
+            </a>
+            <a href="https://www.instagram.com/_.arpitha_._/" target="_blank" rel="noopener" class="flex justify-between items-center py-5 border-t border-b border-line text-lg font-semibold hover:text-gold hover:pl-3 transition-all duration-300 group">
+              Instagram
+              <span class="text-xs text-cream-dim font-normal group-hover:text-gold transition-colors">process &amp; behind the scenes</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ CONTACT ============ -->
+<footer id="contact" class="bg-navy text-cream py-40 max-sm:py-24 pb-16 relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(to right,transparent,#C8A55C,transparent)"></div>
+  <div class="max-w-[1200px] mx-auto px-12 max-sm:px-5">
+    <p class="text-xs tracking-[0.2em] uppercase text-gold font-semibold mb-5 flex items-center gap-3">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      10 — Contact
+    </p>
+    <h2 class="serif font-black leading-tight tracking-tight max-w-3xl mb-10" style="font-size:clamp(2.6rem,7vw,5rem)">have a product or a brand<br>that needs some attention?</h2>
+    <div class="flex gap-4 flex-wrap items-center mb-20">
+      <a href="mailto:rasvixstudio@gmail.com" class="inline-flex items-center gap-2.5 px-8 py-4 text-xs font-semibold tracking-widest uppercase bg-gold text-navy border border-gold hover:bg-cream hover:border-cream transition-all duration-300">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>rasvixstudio@gmail.com</span>
+      </a>
+      <a href="tel:+919187558618" class="inline-flex items-center gap-2.5 px-8 py-4 text-xs font-semibold tracking-widest uppercase bg-transparent text-cream border border-line-strong hover:bg-gold hover:text-navy hover:border-gold transition-all duration-300">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+91 91875 58618</span>
+      </a>
+    </div>
+    <div class="flex justify-between flex-wrap gap-6 pt-7 border-t border-line text-xs text-cream-dim">
+      <span>Arpitha A G — Rasvix Studio, Bangalore, Karnataka</span>
+      <a href="#top" class="hover:text-gold transition-colors">back to top ↑</a>
+    </div>
+  </div>
+</footer>
+<script>if (window.lucide) lucide.createIcons();</script>
+</html>
